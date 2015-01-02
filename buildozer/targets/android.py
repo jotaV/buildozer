@@ -300,13 +300,13 @@ class TargetAndroid(Target):
                 available_packages.splitlines() if x.startswith('id: ')]
 
     def _android_update_sdk(self, packages):
-        from buildozer.libs.pexpect import EOF
+        from pexpect import EOF
         child = self.buildozer.cmd_expect('{} update sdk -u -a -t {}'.format(
             self.android_cmd, packages,
             cwd=self.buildozer.global_platform_dir),
             timeout=None)
         while True:
-            index = child.expect([EOF, '[y/n]: '])
+            index = child.expect([EOF, u'[y/n]: '])
             if index == 0:
                 break
             child.sendline('y')
