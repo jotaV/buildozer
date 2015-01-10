@@ -976,7 +976,11 @@ class Buildozer(object):
             pass
 
         warn_on_root = self.config.getdefault('buildozer', 'warn_on_root', '1')
-        euid = os.geteuid()
+        try:
+            euid = os.geteuid()
+        except AttributeError:
+            import getpass
+            euid = getpass.getuser()
         if warn_on_root == '1' and euid == 0:
             print('\033[91m\033[1mBuildozer is running as root!\033[0m')
             print('\033[91mThis is \033[1mnot\033[0m \033[91mrecommended, and may lead to problems later.\033[0m')
